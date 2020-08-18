@@ -5,6 +5,7 @@ use paired::bls12_381::Bls12;
 use rust_gpu_tools::opencl as cl;
 use std::collections::HashMap;
 use std::sync::Mutex;
+use log::info;
 
 pub struct DevicePool {
     devices: Vec<cl::Device>,
@@ -30,6 +31,7 @@ lazy_static::lazy_static! {
         let mut ret = HashMap::new();
         let src = sources::kernel::<Bls12>();
         for d in cl::Device::all().unwrap() {
+            info!("Compiling kernels on device: {} (Bus-id: {})",d.name(),d.bus_id());
             let program = cl::Program::from_opencl(d.clone(), &src).unwrap();
             ret.insert(d, program);
         }
