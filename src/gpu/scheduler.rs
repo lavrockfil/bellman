@@ -1,11 +1,11 @@
 use super::*;
 use crate::multicore::Worker;
 use futures::Future;
+use log::info;
 use paired::bls12_381::Bls12;
 use rust_gpu_tools::opencl as cl;
 use std::collections::HashMap;
 use std::sync::Mutex;
-use log::info;
 
 pub struct DevicePool {
     devices: Vec<cl::Device>,

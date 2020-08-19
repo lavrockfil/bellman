@@ -50,7 +50,7 @@ lazy_static::lazy_static! {
 }
 
 const DEFAULT_CORE_COUNT: usize = 2560;
-pub fn get_core_count(d: &opencl::Device) -> usize {
+fn get_core_count(d: &opencl::Device) -> usize {
     let name = d.name();
     match CORE_COUNTS.get(&name[..]) {
         Some(&cores) => cores,
@@ -65,6 +65,10 @@ pub fn get_core_count(d: &opencl::Device) -> usize {
             DEFAULT_CORE_COUNT
         }
     }
+}
+
+pub fn best_work_size(d: &opencl::Device) -> usize {
+    get_core_count(d) * 2
 }
 
 pub fn dump_device_list() {
