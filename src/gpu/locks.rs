@@ -2,12 +2,19 @@ use fs2::FileExt;
 use log::{debug, info, warn};
 use std::fs::File;
 use std::path::PathBuf;
-
+use std::env;
 const GPU_LOCK_NAME: &str = "bellman.gpu.lock";
 const PRIORITY_LOCK_NAME: &str = "bellman.priority.lock";
 fn tmp_path(filename: &str) -> PathBuf {
     let mut p = std::env::temp_dir();
-    p.push(filename);
+
+    let mut mfilename = String::from(filename);
+    let vd = env::var("CUDA_VISIBLE_DEVICES");
+    match vd {
+        Ok(n)  =>  mfilename.push_str(&n) ,
+        Err(e) => println!("CUDA_VISIBLE_DEVICES: {:?}", e),
+    }
+    p.push(mfilename);
     p
 }
 
